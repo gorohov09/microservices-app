@@ -31,8 +31,8 @@ services:
     container_name: rabbitmq
     restart: always
     ports:
-      - "5676:5672"
-      - "15676:15672"
+      - "5672:5672"
+      - "15672:15672"
 
   portainer:
     container_name: portainer
@@ -60,8 +60,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - "CacheSettings:ConnectionString=basketdb:6379"
       - "GrpcSettings:DiscountUrl=http://discount.grpc"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     depends_on:
       - basketdb
+      - rabbitmq
     ports:
       - "8001:80"
 
@@ -92,9 +94,11 @@ services:
     container_name: ordering.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings:OrderingConnectionString=Server=postgresdb;Port=5432;Database=OrderDb;User Id=admin;Password=admin1234;" 
+      - "ConnectionStrings:OrderingConnectionString=Server=postgresdb;Port=5432;Database=OrderDb;User Id=admin;Password=admin1234;"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     depends_on:
       - postgresdb
+      - rabbitmq
     ports:
       - "8004:80"
 
