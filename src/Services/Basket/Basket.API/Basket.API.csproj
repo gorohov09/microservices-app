@@ -16,6 +16,11 @@
 	<PackageReference Include="MassTransit" Version="7.1.6" />
 	<PackageReference Include="MassTransit.AspNetCore" Version="7.1.6" />
 	<PackageReference Include="MassTransit.RabbitMQ" Version="7.1.6" />
+	<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\EventBus.Messages\EventBus.Messages.csproj" />
   </ItemGroup>
 
   <ItemGroup>
