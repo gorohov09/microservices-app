@@ -128,6 +128,10 @@
         "Period": "5s",
         "PeriodTimespan": 5,
         "Limit": 1
+      },
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "europe-central"
       }
     }
   ],
