@@ -46,7 +46,7 @@ namespace Ordering.API
             //services.AddScoped<BasketCheckoutConsumer>();
 
             //Добавление кролика
-            services.AddRabbitMq(Configuration["EventBusSettings:HostAddress"]);
+            services.AddRabbitMq(Configuration);
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

@@ -38,7 +38,7 @@ namespace Basket.API
             services.AddAutoMapper(typeof(Startup));
 
             //Добавление кролика
-            services.AddRabbitMq(Configuration["EventBusSettings:HostAddress"]);
+            services.AddRabbitMq(Configuration);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

@@ -72,7 +72,7 @@ namespace Basket.API.Controllers
 
             var basketCheckoutEvent = _mapper.Map<BasketCheckoutIntegrationEvent>(basketCheckout);
             basketCheckoutEvent.TotalPrice = existingBasket.TotalPrice;
-            await _publishEndpoint.PublishAsync(basketCheckoutEvent);
+            await _publishEndpoint.PublishWithRoutingKeyAsync(basketCheckoutEvent, "basket-checkout");
 
             await _basketRepository.DeleteBasket(basketCheckout.UserName);
 

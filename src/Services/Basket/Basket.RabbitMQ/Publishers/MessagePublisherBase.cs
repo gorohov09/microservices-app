@@ -19,5 +19,9 @@ namespace Basket.RabbitMQ.Publishers
         public async Task PublishAsync<TMessage>(params TMessage[] messages)
             where TMessage : class
             => await _publishEndpoint.PublishBatch(messages);
+
+        public async Task PublishWithRoutingKeyAsync<TMessage>(TMessage message, string routingKey)
+            where TMessage : class
+            => await _publishEndpoint.Publish(message, context => context.SetRoutingKey(routingKey));
     }
 }

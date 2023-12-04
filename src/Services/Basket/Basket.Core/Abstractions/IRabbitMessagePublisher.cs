@@ -12,5 +12,8 @@ namespace Basket.Core.Abstractions
         /// <returns>-</returns>
         Task PublishAsync<TMessage>(params TMessage[] messages)
             where TMessage : class;
+
+        Task PublishWithRoutingKeyAsync<TMessage>(TMessage message, string routingKey)
+            where TMessage : class;
     }
 }

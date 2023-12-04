@@ -1,9 +1,8 @@
 ﻿using Basket.Core.Contracts.Messages;
 using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using System.Collections.Generic;
-
+using RabbitMQ.Client;
 
 namespace Basket.RabbitMQ
 {
@@ -18,8 +17,15 @@ namespace Basket.RabbitMQ
         /// <param name="services">Коллекция служб</param>
         /// <param name="connectionString">Строка подключения к RMQ</param>
         /// <returns>Обновленная коллекция служб</returns>
-        public static IServiceCollection AddRabbitMq(this IServiceCollection services, string connectionString)
-            => services.AddMassTransit(connectionString, options => options
-                .AddProducer<BasketCheckoutIntegrationEvent>(exchangeName: "test-exchange"));
+        public static IServiceCollection AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
+        {
+            var hostAddress = configuration["EventBusSettings:HostAddress"];
+            var basketCheckoutExchangeName = configuration["EventBusSettings:Producers:BasketCheckout:ExchangeName"];
+
+            services.AddMassTransit(hostAddress, options => options
+                .AddProducer<BasketCheckoutIntegrationEvent>(exchangeName: basketCheckoutExchangeName, exchangeExchangeType: ExchangeType.Direct));
+
+            return services;
+        }
     }
 }
