@@ -26,29 +26,8 @@ namespace Ordering.API
                 .AddApplicationServices()
                 .AddInfrastructureServices(Configuration);
 
-            //services.AddMassTransit(config => {
-
-            //    config.AddConsumer<BasketCheckoutConsumer>();
-
-            //    config.UsingRabbitMq((ctx, cfg) => {
-            //        var host = Configuration["EventBusSettings:HostAddress"];
-
-            //        cfg.Host(host);
-
-            //        cfg.ReceiveEndpoint(EventBusConstants.BasketCheckoutQueue, c =>
-            //        {
-            //            c.ConfigureConsumer<BasketCheckoutConsumer>(ctx);
-            //        });
-            //    });
-            //});
-            //services.AddMassTransitHostedService();
-
-            //services.AddScoped<BasketCheckoutConsumer>();
-
             //Добавление кролика
             services.AddRabbitMq(Configuration);
-
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
