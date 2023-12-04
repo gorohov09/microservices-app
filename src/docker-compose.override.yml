@@ -44,61 +44,61 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data 
 
-  catalog.api:
-    container_name: catalog.api
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
-    depends_on:
-      - catalogdb
-    ports:
-      - "8000:80"
+  #catalog.api:
+  #  container_name: catalog.api
+  #  environment:
+  #    - ASPNETCORE_ENVIRONMENT=Development
+  #    - "DatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
+  #  depends_on:
+  #    - catalogdb
+  #  ports:
+  #    - "8000:80"
 
-  basket.api:
-    container_name: basket.api
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - "CacheSettings:ConnectionString=basketdb:6379"
-      - "GrpcSettings:DiscountUrl=http://discount.grpc"
-      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
-    depends_on:
-      - basketdb
-      - rabbitmq
-    ports:
-      - "8001:80"
-
-
-  discount.api:
-    container_name: discount.api
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings:ConnectionString=Server=postgresdb;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;"
-    depends_on:
-      - postgresdb
-    ports:
-      - "8002:80"
+  #basket.api:
+  #  container_name: basket.api
+  #  environment:
+  #    - ASPNETCORE_ENVIRONMENT=Development
+  #    - "CacheSettings:ConnectionString=basketdb:6379"
+  #    - "GrpcSettings:DiscountUrl=http://discount.grpc"
+  #    - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+  #  depends_on:
+  #    - basketdb
+  #    - rabbitmq
+  #  ports:
+  #    - "8001:80"
 
 
-  discount.grpc:
-    container_name: discount.grpc
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings:ConnectionString=Server=postgresdb;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;"
-    depends_on:
-      - postgresdb
-    ports:
-      - "8003:80"
+  #discount.api:
+  #  container_name: discount.api
+  #  environment:
+  #    - ASPNETCORE_ENVIRONMENT=Development
+  #    - "DatabaseSettings:ConnectionString=Server=postgresdb;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;"
+  #  depends_on:
+  #    - postgresdb
+  #  ports:
+  #    - "8002:80"
 
 
-  ordering.api:
-    container_name: ordering.api
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings:OrderingConnectionString=Server=postgresdb;Port=5432;Database=OrderDb;User Id=admin;Password=admin1234;"
-      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
-    depends_on:
-      - postgresdb
-      - rabbitmq
-    ports:
-      - "8004:80"
+  #discount.grpc:
+  #  container_name: discount.grpc
+  #  environment:
+  #    - ASPNETCORE_ENVIRONMENT=Development
+  #    - "DatabaseSettings:ConnectionString=Server=postgresdb;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;"
+  #  depends_on:
+  #    - postgresdb
+  #  ports:
+  #    - "8003:80"
+
+
+  #ordering.api:
+  #  container_name: ordering.api
+  #  environment:
+  #    - ASPNETCORE_ENVIRONMENT=Development
+  #    - "ConnectionStrings:OrderingConnectionString=Server=postgresdb;Port=5432;Database=OrderDb;User Id=admin;Password=admin1234;"
+  #    - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+  #  depends_on:
+  #    - postgresdb
+  #    - rabbitmq
+  #  ports:
+  #    - "8004:80"
 

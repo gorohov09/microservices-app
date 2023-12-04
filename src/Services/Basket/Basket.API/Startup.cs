@@ -1,19 +1,16 @@
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Discount.Grpc.Protos;
-using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Basket.RabbitMQ;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Basket.API
 {
@@ -40,13 +37,8 @@ namespace Basket.API
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddMassTransit(config => {
-                config.UsingRabbitMq((ctx, cfg) => {
-                    var host = Configuration["EventBusSettings:HostAddress"];
-                    cfg.Host(host);
-                });
-            });
-            services.AddMassTransitHostedService();
+            //Добавление кролика
+            services.AddRabbitMq(Configuration);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

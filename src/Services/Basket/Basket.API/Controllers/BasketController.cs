@@ -2,7 +2,8 @@
 using Basket.API.Entities;
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
-using EventBus.Messages.Events;
+using Basket.Core.Abstractions;
+using Basket.Core.Contracts.Messages;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,14 +20,14 @@ namespace Basket.API.Controllers
         private readonly IBasketRepository _basketRepository;
         private readonly ILogger<BasketController> _logger;
         private readonly DiscountGrpcService _discountGrpcService;
-        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IRabbitMessagePublisher _publishEndpoint;
         private readonly IMapper _mapper;
 
         public BasketController(
             IBasketRepository basketRepository, 
             ILogger<BasketController> logger, 
             DiscountGrpcService discountGrpcService,
-            IPublishEndpoint publishEndpoint,
+            IRabbitMessagePublisher publishEndpoint,
             IMapper mapper)
         {
             _basketRepository = basketRepository ?? throw new ArgumentNullException(nameof(basketRepository));
@@ -69,9 +70,9 @@ namespace Basket.API.Controllers
             if (existingBasket == null)
                 return BadRequest();
 
-            var basketCheckoutEvent = _mapper.Map<BasketCheckoutEvent>(basketCheckout);
+            var basketCheckoutEvent = _mapper.Map<BasketCheckoutIntegrationEvent>(basketCheckout);
             basketCheckoutEvent.TotalPrice = existingBasket.TotalPrice;
-            await _publishEndpoint.Publish(basketCheckoutEvent);
+            await _publishEndpoint.PublishWithRoutingKeyAsync(basketCheckoutEvent, "basket-checkout");
 
             await _basketRepository.DeleteBasket(basketCheckout.UserName);
 
