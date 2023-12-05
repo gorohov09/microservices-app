@@ -19,6 +19,10 @@
         "Period": "5s",
         "PeriodTimespan": 5,
         "Limit": 1
+      },
+      "FileCacheOptions": {
+        "TtlSeconds": 25,
+        "Region": "europe-central"
       }
     },
     {
@@ -121,18 +125,7 @@
         }
       ],
       "UpstreamPathTemplate": "/Order/{userName}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "5s",
-        "PeriodTimespan": 5,
-        "Limit": 1
-      },
-      "FileCacheOptions": {
-        "TtlSeconds": 15,
-        "Region": "europe-central"
-      }
+      "UpstreamHttpMethod": [ "GET" ]
     }
   ],
   "GlobalConfiguration": {
