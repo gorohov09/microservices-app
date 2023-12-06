@@ -1,4 +1,4 @@
-﻿using Basket.API.Entities;
+﻿using Basket.Core.Entities;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using System;
@@ -33,6 +33,11 @@ namespace Basket.API.Repositories
         public async Task DeleteBasket(string userName)
         {
             await _redisCache.RemoveAsync(userName);
+        }
+
+        public async Task UpdatePrices(Guid productId, decimal newPrice)
+        {
+            await Task.CompletedTask;
         }
     }
 }

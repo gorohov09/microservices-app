@@ -1,4 +1,5 @@
 ﻿using Basket.Core.Contracts.Messages;
+using Basket.RabbitMQ.Consumers;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +23,15 @@ namespace Basket.RabbitMQ
             var hostAddress = configuration["EventBusSettings:HostAddress"];
             var basketCheckoutExchangeName = configuration["EventBusSettings:Producers:BasketCheckout:ExchangeName"];
 
+            var priceUpdatedExchangeName = configuration["EventBusSettings:Consumers:PriceUpdated:ExchangeName"];
+            var priceUpdatedExchangeType = configuration["EventBusSettings:Consumers:PriceUpdated:ExchangeType"];
+            var priceUpdatedQueueName = configuration["EventBusSettings:Consumers:PriceUpdated:QueueName"];
+
             services.AddMassTransit(hostAddress, options => options
-                .AddProducer<BasketCheckoutIntegrationEvent>(exchangeName: basketCheckoutExchangeName, exchangeExchangeType: ExchangeType.Direct));
+                .AddProducer<BasketCheckoutIntegrationEvent>(exchangeName: basketCheckoutExchangeName, exchangeExchangeType: ExchangeType.Direct)
+                .AddConsumer<ProductPriceUpdatedIntegrationEvent, ProductPriceUpdateConsumer>(
+                    queueName: priceUpdatedQueueName, 
+                    exchangeName: priceUpdatedExchangeName, exchangeExchangeType: priceUpdatedExchangeType));
 
             return services;
         }

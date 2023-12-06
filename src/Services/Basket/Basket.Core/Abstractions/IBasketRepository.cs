@@ -1,4 +1,5 @@
-﻿using Basket.API.Entities;
+﻿using Basket.Core.Entities;
+using System;
 using System.Threading.Tasks;
 
 namespace Basket.API.Repositories
@@ -8,5 +9,6 @@ namespace Basket.API.Repositories
         Task<ShoppingCart> GetBasket(string userName);
         Task<ShoppingCart> UpdateBasket(ShoppingCart basket);
         Task DeleteBasket(string userName);
+        Task UpdatePrices(Guid productId, decimal newPrice);
     }
 }

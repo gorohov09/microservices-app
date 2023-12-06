@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Basket.API.Entities;
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Basket.Core.Abstractions;
 using Basket.Core.Contracts.Messages;
+using Basket.Core.Entities;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

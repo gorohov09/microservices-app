@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EventBusConsumer\**" />
+    <Content Remove="EventBusConsumer\**" />
+    <EmbeddedResource Remove="EventBusConsumer\**" />
+    <None Remove="EventBusConsumer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.4">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -20,10 +27,6 @@
     <ProjectReference Include="..\Ordering.Application\Ordering.Application.csproj" />
     <ProjectReference Include="..\Ordering.Infrastructure\Ordering.Infrastructure.csproj" />
     <ProjectReference Include="..\Ordering.RabbitMQ\Ordering.RabbitMQ.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="EventBusConsumer\" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Basket.API.Entities;
 using Basket.Core.Contracts.Messages;
+using Basket.Core.Entities;
 
 namespace Basket.API.Mapper
 {
