@@ -1,11 +1,9 @@
-﻿using Basket.Core.Contracts.Messages;
-using Basket.RabbitMQ.Consumers;
-using MassTransit;
+﻿using Catalog.Core.Contracts.Messages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 
-namespace Basket.RabbitMQ
+namespace Catalog.RabbitMQ
 {
     /// <summary>
 	/// Класс - входная точка проекта, регистрирующий реализованные зависимости текущим проектом
@@ -21,17 +19,10 @@ namespace Basket.RabbitMQ
         public static IServiceCollection AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
         {
             var hostAddress = configuration["EventBusSettings:HostAddress"];
-            var basketCheckoutExchangeName = configuration["EventBusSettings:Producers:BasketCheckout:ExchangeName"];
-
-            var priceUpdatedExchangeName = configuration["EventBusSettings:Consumers:PriceUpdated:ExchangeName"];
-            var priceUpdatedExchangeType = configuration["EventBusSettings:Consumers:PriceUpdated:ExchangeType"];
-            var priceUpdatedQueueName = configuration["EventBusSettings:Consumers:PriceUpdated:QueueName"];
+            var productPriceUpdatedExchangeName = configuration["EventBusSettings:Producers:PriceUpdated:ExchangeName"];
 
             services.AddMassTransit(hostAddress, options => options
-                .AddProducer<BasketCheckoutIntegrationEvent>(exchangeName: basketCheckoutExchangeName, exchangeExchangeType: ExchangeType.Direct)
-                .AddConsumer<ProductPriceUpdatedIntegrationEvent, ProductPriceUpdateConsumer>(
-                    queueName: priceUpdatedQueueName, 
-                    exchangeName: priceUpdatedExchangeName, exchangeExchangeType: priceUpdatedExchangeType));
+                .AddProducer<ProductPriceUpdatedIntegrationEvent>(exchangeName: productPriceUpdatedExchangeName));
 
             return services;
         }

@@ -9,14 +9,13 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="5.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
 	<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Basket.Persistence.Redis\Basket.Persistence.Redis.csproj" />
     <ProjectReference Include="..\Basket.RabbitMQ\Basket.RabbitMQ.csproj" />
   </ItemGroup>
 

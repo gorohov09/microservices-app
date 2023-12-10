@@ -1,5 +1,7 @@
 ﻿using Catalog.API.Entities;
 using Catalog.API.Repositories;
+using Catalog.Core.Abstractions;
+using Catalog.Core.Contracts.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,12 +16,14 @@ namespace Catalog.API.Controllers
     public class CatalogController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
+        private readonly IRabbitMessagePublisher _publishEndpoint;
         private readonly ILogger<CatalogController> _logger;
 
-        public CatalogController(IProductRepository productRepository, ILogger<CatalogController> logger)
+        public CatalogController(IProductRepository productRepository, IRabbitMessagePublisher publishEndpoint, ILogger<CatalogController> logger)
         {
             _productRepository = productRepository ??  throw new ArgumentNullException(nameof(productRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
         }
 
         [HttpGet]
@@ -66,7 +70,25 @@ namespace Catalog.API.Controllers
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<Product>>> UpdateProduct([FromBody] Product product)
         {
-            return Ok(await _productRepository.UpdateProduct(product));
+            var oldProduct = await _productRepository.GetProductById(product.Id);
+
+            #region TODO: Реализовать паттерн Outbox
+
+            //1-ая операция(Сохранение данных в БД)
+            var result = await _productRepository.UpdateProduct(product);
+
+            if (result && oldProduct?.Price != product.Price)
+            {
+                //2-ая операция(Отправление данных в брокер)
+                await _publishEndpoint.PublishAsync(new ProductPriceUpdatedIntegrationEvent
+                {
+                    NewPrice = product.Price,
+                    ProductId = product.Id
+                });
+            }
+            #endregion
+
+            return Ok(result);
         }
 
         [HttpDelete("{id:length(24)}", Name = "DeleteProduct")]

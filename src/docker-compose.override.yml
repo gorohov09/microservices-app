@@ -15,17 +15,29 @@ services:
     ports:
       - "6379:6379" 
 
-  postgresdb:
-    container_name: postgresdb
+  discountdb:
+    container_name: discountdb
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin1234
-      - POSTGRES_MULTIPLE_DATABASES=DiscountDb,OrderDb
+      - POSTGRES_DB=DiscountDb
     restart: always
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data/ 
+      - discountdb_data:/var/lib/postgresql/data/ 
+
+  orderdb:
+    container_name: orderdb
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin1234
+      - POSTGRES_DB=OrderDb
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - orderdb_data:/var/lib/postgresql/data/
 
   rabbitmq:
     container_name: rabbitmq
