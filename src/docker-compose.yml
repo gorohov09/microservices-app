@@ -7,7 +7,10 @@ services:
   basketdb:
     image: redis:alpine
 
-  postgresdb:
+  discountdb:
+    image: postgres
+
+  orderdb:
     image: postgres
 
   rabbitmq:
@@ -49,7 +52,8 @@ services:
 volumes:
   mongo_data:
   portainer_data:
-  postgres_data:
+  discountdb_data:
+  orderdb_data:
 
 
 
