@@ -20,8 +20,7 @@ namespace Basket.RabbitMQ.Consumers
 
             if (@event != null)
             {
-                if (Guid.TryParse(@event.ProductId, out var productId))
-                    await _basketRepository.UpdatePrices(productId, @event.NewPrice);
+                await _basketRepository.UpdatePrices(@event.ProductId, @event.NewPrice);
             }
         }
     }

@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Basket.RabbitMQ;
 using System;
-
+using Basket.Persistence.Redis;
 
 namespace Basket.API
 {
@@ -25,12 +25,6 @@ namespace Basket.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = Configuration.GetValue<string>("CacheSettings:ConnectionString");
-            });
-            services.AddScoped<IBasketRepository, BasketRepository>();
-
             services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
                         (o => o.Address = new Uri(Configuration["GrpcSettings:DiscountUrl"]));
             services.AddScoped<DiscountGrpcService>();
@@ -45,6 +39,9 @@ namespace Basket.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Basket.API", Version = "v1" });
             });
+
+            //Добавление репозитория(Redis), где хранятся корзины пользователей
+            services.AddRedis(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
